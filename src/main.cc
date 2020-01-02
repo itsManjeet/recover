@@ -9,18 +9,7 @@ int
 main(int    ac,
      char** av)
 {
-    Config *cfg;
     
-    if (filesys::exist(loc_config)) {
-        cfg = new Config(loc_config);
-    } else if (filesys::exist(global_config)) {
-        cfg = new Config(loc_config);
-    } else {
-        std::cout << "No Configuration file exist" << std::endl;
-        return -2;
-    }
-
-
 
     auto app = new App();
     app->name("recover")
@@ -33,7 +22,9 @@ main(int    ac,
            "itsmanjeet1998@gmail.com",
            "Lead Developer"
         )
-        
+
+        ->config_file(loc_config)
+
         ->sub(
             "sysimage",
             "Recover system from backup image ( replace /usr )",
@@ -48,12 +39,12 @@ main(int    ac,
             func_reset
         );
 
+
     int status = app->execute(ac, av);
     if (status != 0) {
         std::cout << "Error occured " << status << std::endl;
     }
 
     delete app;
-    delete cfg;
     return status;
 }
